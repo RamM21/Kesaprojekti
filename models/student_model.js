@@ -2,7 +2,7 @@ const db = require('../database')
 
 const student={
     get:function(callback){
-        return db.query('select * from student',callback)
+        return db.query('select * from opiskelija',callback)
     },
     getById:function(id,callback){
         return db.query('select * from student where StudentID=?',[id],callback)
