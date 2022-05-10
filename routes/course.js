@@ -1,3 +1,70 @@
 const express = require('express')
 const router = express.Router()
+const course = require('../models/course_model')
+
+router.get('/:id?',function(request,response){
+    if(request.params.id){
+        course.getById(request.params.id,function(err,result){
+            if(err){
+                response.json(err)
+            }else{
+                response.json(result)
+            }
+        })
+    }else{
+        course.get(function(err,result){
+            if(err){
+                response.json(err)
+            }else{
+                response.json(result)
+            }
+        })
+    }
+})
+router.get('/t/:id',function(request,response){
+    course.getTID(request.params.id,function(err,result){
+        if(err){
+            response.json(err)
+        }else{
+            response.json(result)
+        }
+    })
+})
+router.get('/s/:id',function(request,response){
+    course.getSID(request.params.id,function(err,result){
+        if(err){
+            response.json(err)
+        }else{
+            response.json(result)
+        }
+    })
+})
+router.post('/',function(request,response){
+    course.add(request.body,function(err,result){
+        if(err){
+            response.json(err)
+        }else{
+            response.json(request.body)
+        }
+    })
+})
+router.delete('/:id',function(request,response){
+    course.delete(request.params.id,function(err,result){
+        if(err){
+            response.json(err)
+        }else{
+            response.json(result)
+        }
+    })
+})
+router.put('/:id',function(request,response){
+    course.update(request.params.id,request.body,function(err,result){
+        if(err){
+            response.json(err)
+        }else{
+            response.json(result)
+        }
+    })
+})
+
 module.exports = router

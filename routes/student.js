@@ -3,49 +3,49 @@ const { request, response } = require('../app')
 const router = express.Router()
 const student = require('../models/student_model')
 
-router.get('/:id?',function(req,res){
-    if(req.params.id){
-        student.getById(req.params.id,function(err,result){
+router.get('/:id?',function(request,response){
+    if(request.params.id){
+        student.getById(request.params.id,function(err,result){
             if(err){
-                res.json(err)
+                response.json(err)
             }else{
-                res.json(result)
+                response.json(result)
             }
         })
     }else{
         student.get(function(err,result){
             if(err){
-                res.json(err)
+                response.json(err)
             }else{
-                res.json(result)
+                response.json(result)
             }
         })
     }
 })
-router.post('/',function(req,res){
-    student.add(req.body,function(err,count){
+router.post('/',function(request,response){
+    student.add(request.body,function(err,count){
         if(err){
-            res.json(err)
+            response.json(err)
         }else{
-            res.json(req.body)
+            response.json(request.body)
         }
     })
 })
-router.delete('/:id',function(req,res){
-    student.delete(req.params.id,function(err,count){
+router.delete('/:id',function(request,response){
+    student.delete(request.params.id,function(err,count){
         if(err){
-            res.json(err)
+            response.json(err)
         }else{
-            res.json(count)
+            response.json(count)
         }
     })
 })
-router.put('/:id',function(req,res){
-    student.update(req.params.id,req.body,function(err,result){
+router.put('/:id',function(request,response){
+    student.update(request.params.id,request.body,function(err,result){
         if(err){
-            res.json(err)
+            response.json(err)
         }else{
-            res.json(result)
+            response.json(result)
         }
     })
 })
