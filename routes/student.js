@@ -1,5 +1,4 @@
 const express = require('express')
-const { request, response } = require('../app')
 const router = express.Router()
 const student = require('../models/student_model')
 

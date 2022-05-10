@@ -23,7 +23,7 @@ const course={
     },
     getSID:function(id,callback){
         return db.query('select * from course where StudentID=?',[id],callback)
-    }
+    },
 }
 
 module.exports = course
