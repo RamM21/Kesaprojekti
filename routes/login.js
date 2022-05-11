@@ -2,11 +2,12 @@ const express = require('express')
 const router = express.Router()
 const login = require('../models/login_model')
 
+//login
 router.post('/',function(request,response){
     if(request.body.email && request.body.password){
         const email = request.body.email
         const password = request.body.password
-        if(email.includes("students.oamk.fi")){
+        if(email.includes("students.oamk.fi")){             //if student login go login student
             login.student(email,function(err,result){
                 if(err){
                     response.json(err)
@@ -25,7 +26,7 @@ router.post('/',function(request,response){
                     }
                 }
             })
-        }else{
+        }else{                                             //if teacher login go login teacher
             login.teacher(email,function(err,result){
                 if(err){
                     response.json(err)
