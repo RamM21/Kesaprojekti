@@ -51,6 +51,10 @@ const course={
     getOS:function(course,callback){
         db.query('select fname,lname from student join course on course.studentid=student.studentid where status is not null and name=? and date=?',
         [course.name,course.date],callback)
+    },
+    //get finished courses
+    getFC:function(callback){
+        return db.query('select teacherid,name,max(date) from course group by teacherid,name',callback)
     }
 }
 
