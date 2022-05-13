@@ -6,7 +6,10 @@ const course = require('../models/course_model')
 const stuff = require('../dev')
 const { response } = require('express')
 
-/*function checkstatus(){
+//setInterval(checkstatus,10000)
+
+/*
+function checkstatus(){
     let date_ob= new Date()
     let day = ('0'+date_ob.getDate()).slice(-2)
     let month = ('0'+(date_ob.getMonth()+1)).slice(-2)
@@ -20,15 +23,15 @@ const { response } = require('express')
             let list=JSON.parse(JSON.stringify(result))
             if(list.length>0){
                 list.forEach(e => {
-                    main(e.email,e.name)
+                    studentMail(e.email,e.name)
                 });
             }
         }
     })
-    
+    getEndStatus()
 }
-setInterval(checkstatus,10000)*/
-/*getEndStatus()
+
+
 async function getEndStatus(){
     let date_ob= new Date()
     let day = ('0'+date_ob.getDate()).slice(-2)
@@ -56,7 +59,6 @@ async function getEndStatus(){
         }
     })
 }
-
 
 async function teacherMail(info){
 
@@ -92,19 +94,19 @@ transporter.sendMail(mailOptions,function(err,result){
         console.log(result)
     }
 })
-}*/
+}
 
-/*
+
 async function studentMail(mail,course){
 
 let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port:587,
+    port:465,
     auth: {
       user: stuff.s,
       pass: stuff.ss
     },
-    /*tls:{
+    tls:{
         ciphers:'SSLv3'
     },
     requireTLS:true

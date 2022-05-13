@@ -54,7 +54,7 @@ router.post('/',function(request,response){
 })
 //removing course
 router.delete('/:id',function(request,response){
-    course.delete(request.params.id,function(err,result){
+    course.delete(request.params.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{
