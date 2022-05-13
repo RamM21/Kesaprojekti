@@ -13,8 +13,8 @@ const course={
         [course.name,course.date,course.TeacherID,course.StudentID],callback)
     },
     //deleting old course
-    delete:function(id,callback){
-        return db.query('delete from course where courseID=?',[id],callback)
+    delete:function(id,course,callback){
+        return db.query('delete from course where teacherid=? and name=?',[id,course.name],callback)
     },
     //students change status of certain day
     update:function(id,course,callback){
@@ -31,11 +31,11 @@ const course={
     },
     //get all status from students in course
     getCSC:function(id,course,callback){
-        return db.query('select count(1),status from course where TeacherID=? and Name=? group by status',[id,course.name],callback)
+        return db.query('select count(1) as count,status from course where TeacherID=? and Name=? group by status',[id,course.name],callback)
     },
     //get certain days status from all students
     getDSC:function(id,course,callback){
-        return db.query('select count(1),status from course where TeacherID=? and Name=? and date=? group by status',
+        return db.query('select count(1) as count,status from course where TeacherID=? and Name=? and date=? group by status',
         [id,course.name,course.date],callback)
     },
     //get info on all course days to student
@@ -44,13 +44,17 @@ const course={
     },
     //get names of students with status null in certain day of course
     getLS:function(course,callback){
-        return db.query('select fname,lname from student join course on course.studentid=student.studentid where status is null and name=? and date=?',
-        [course.name,course.date],callback)
+        return db.query('select fname,lname from student join course on course.studentid=student.studentid where status is null and name=? and date=? and teacherid=? group by fname,lname',
+        [course.name,course.date,course.id],callback)
     },
     //get names of students with not null status in certain day of course
     getOS:function(course,callback){
-        db.query('select fname,lname from student join course on course.studentid=student.studentid where status is not null and name=? and date=?',
-        [course.name,course.date],callback)
+        return db.query('select fname,lname from student join course on course.studentid=student.studentid where status is not null and name=? and date=? and teacherid=? group by fname,lname',
+        [course.name,course.date,course.id],callback)
+    },
+    //get finished courses
+    getFC:function(callback){
+        return db.query('select teacherid,name,max(date) from course group by teacherid,name',callback)
     }
 }
 
