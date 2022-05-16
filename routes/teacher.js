@@ -1,9 +1,27 @@
 const express = require('express')
 const router = express.Router()
 const teacher = require('../models/teacher_model')
+const jwtStrategy = require('passport-jwt').Strategy
+const extractJwt = require('passport-jwt').ExtractJwt
+const passport = require('passport')
+
+let jwtSecretKey=null
+if(process.env.JWTKEY === undefined){
+    jwtSecretKey=require('../jwt-key.json').secret
+}else{
+    jwtSecretKey=process.env.JWTKEY
+}
+let options={}
+
+options.jwtFromRequest=extractJwt.fromAuthHeaderAsBearerToken()
+options.secretOrKey=jwtSecretKey
+
+passport.use(new jwtStrategy(options,function(jwt_payload,done){
+    done(null,jwt_payload.user)
+}))
 
 //get all teacher info or by id
-router.get('/:id?',function(request,response){
+router.get('/:id?',passport.authenticate('jwt',{session:false}),function(request,response){
     if(request.params.id){
         teacher.getById(request.params.id,function(err,result){
             if(err){
@@ -33,7 +51,7 @@ router.post('/',function(request,response){
     })
 })
 //remove teacher
-router.delete('/:id',function(request,response){
+router.delete('/:id',passport.authenticate('jwt',{session:false}),function(request,response){
     teacher.delete(request.params.id,function(err,result){
         if(err){
             response.json(err)
@@ -43,7 +61,7 @@ router.delete('/:id',function(request,response){
     })
 })
 //update teacher
-router.put('/:id',function(request,response){
+router.put('/:id',passport.authenticate('jwt',{session:false}),function(request,response){
     teacher.update(request.params.id,function(err,result){
         if(err){
             response.json(err)

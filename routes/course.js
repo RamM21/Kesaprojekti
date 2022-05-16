@@ -1,11 +1,29 @@
 const express = require('express')
 const router = express.Router()
 const course = require('../models/course_model')
+const jwtStrategy = require('passport-jwt').Strategy
+const extractJwt = require('passport-jwt').ExtractJwt
+const passport = require('passport')
+
+let jwtSecretKey=null
+if(process.env.JWTKEY === undefined){
+    jwtSecretKey=require('../jwt-key.json').secret
+}else{
+    jwtSecretKey=process.env.JWTKEY
+}
+let options={}
+
+options.jwtFromRequest=extractJwt.fromAuthHeaderAsBearerToken()
+options.secretOrKey=jwtSecretKey
+
+passport.use(new jwtStrategy(options,function(jwt_payload,done){
+    done(null,jwt_payload.user)
+}))
 
 //get course by id or all courses
-router.get('/:id?',function(request,response){
-    if(request.params.id){
-        course.getById(request.params.id,function(err,result){
+router.get('/',passport.authenticate('jwt',{session:false}),function(request,response){
+    if(request.user.id){
+        course.getById(request.user.id,function(err,result){
             if(err){
                 response.json(err)
             }else{
@@ -23,8 +41,8 @@ router.get('/:id?',function(request,response){
     }
 })
 //get all courses of teacher
-router.get('/t/:id',function(request,response){
-    course.getTID(request.params.id,function(err,result){
+router.get('/t',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getTID(request.user.id,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -33,8 +51,8 @@ router.get('/t/:id',function(request,response){
     })
 })
 //get all courses of student
-router.get('/s/:id',function(request,response){
-    course.getSID(request.params.id,function(err,result){
+router.get('/s',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getSID(request.user.id,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -43,8 +61,8 @@ router.get('/s/:id',function(request,response){
     })
 })
 //adding course
-router.post('/',function(request,response){
-    course.add(request.body,function(err,result){
+router.post('/',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.add(request.user.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -53,8 +71,8 @@ router.post('/',function(request,response){
     })
 })
 //removing course
-router.delete('/:id',function(request,response){
-    course.delete(request.params.id,request.body,function(err,result){
+router.delete('/',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.delete(request.user.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -63,8 +81,8 @@ router.delete('/:id',function(request,response){
     })
 })
 //updating status
-router.put('/:id',function(request,response){
-    course.update(request.params.id,request.body,function(err,result){
+router.put('/',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.update(request.user.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -73,8 +91,8 @@ router.put('/:id',function(request,response){
     })
 })
 //get students status count in whole course
-router.get('/CSC/:id',function(request,response){
-    course.getCSC(request.params.id,request.body,function(err,result){
+router.get('/CSC',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getCSC(request.user.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -83,8 +101,8 @@ router.get('/CSC/:id',function(request,response){
     })
 })
 //get student status count in certain day
-router.get('/DSC/:id',function(request,response){
-    course.getDSC(request.params.id,request.body,function(err,result){
+router.get('/DSC',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getDSC(request.user.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -93,8 +111,8 @@ router.get('/DSC/:id',function(request,response){
     })
 })
 //get course day info for student
-router.get('/SDS/:id',function(request,response){
-    course.getSDS(request.params.id,request.body,function(err,result){
+router.get('/SDS',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getSDS(request.user.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -103,8 +121,8 @@ router.get('/SDS/:id',function(request,response){
     })
 })
 //get name of student with status null in certain day of course
-router.post('/LS/',function(request,response){
-    course.getLS(request.body,function(err,result){
+router.post('/LS/',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getLS(request.user.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -113,8 +131,8 @@ router.post('/LS/',function(request,response){
     })
 })
 //get names of students with not null status in certain day of course
-router.post('/OS/',function(request,response){
-    course.getOS(request.body,function(err,result){
+router.post('/OS/',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getOS(request.user.id,request.body,function(err,result){
         if(err){
             response.json(err)
         }else{

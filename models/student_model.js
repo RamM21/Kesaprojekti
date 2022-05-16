@@ -1,4 +1,7 @@
 const db = require('../database')
+const bcrypt = require('bcryptjs')
+
+const saltround=7
 
 const student={
     //get all student info
@@ -11,8 +14,10 @@ const student={
     },
     //add student
     add:function(student,callback){
+        bcrypt.hash(student.password,saltround,function(err,hash){
         return db.query('insert into Student values(null,?,?,?,?,?)',
-        [student.fname,student.lname,student.class,student.email,student.password],callback)
+        [student.fname,student.lname,student.class,student.email,hash],callback)
+    })
     },
     //remove student
     delete:function(id,callback){
