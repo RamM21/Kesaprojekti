@@ -8,9 +8,9 @@ const course={
         return db.query('select * from course where courseID=?',[id],callback)
     },
     //making course
-    add:function(course,callback){
+    add:function(id,course,callback){
         return db.query('insert into course values(null,?,?,?,?,null)',
-        [course.name,course.date,course.TeacherID,course.StudentID],callback)
+        [course.name,course.date,id,course.StudentID],callback)
     },
     //deleting old course
     delete:function(id,course,callback){
@@ -43,14 +43,14 @@ const course={
         return db.query('select * from course where studentid=? and name=?',[id,course.name],callback)
     },
     //get names of students with status null in certain day of course
-    getLS:function(course,callback){
+    getLS:function(id,course,callback){
         return db.query('select fname,lname from student join course on course.studentid=student.studentid where status is null and name=? and date=? and teacherid=? group by fname,lname',
-        [course.name,course.date,course.id],callback)
+        [course.name,course.date,id],callback)
     },
     //get names of students with not null status in certain day of course
-    getOS:function(course,callback){
+    getOS:function(id,course,callback){
         return db.query('select fname,lname from student join course on course.studentid=student.studentid where status is not null and name=? and date=? and teacherid=? group by fname,lname',
-        [course.name,course.date,course.id],callback)
+        [course.name,course.date,id],callback)
     },
     //get finished courses
     getFC:function(callback){
