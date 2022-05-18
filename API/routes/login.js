@@ -54,7 +54,6 @@ passport.use(new BasicStrategy(function(username,password,done){
     }else{
         return done(null,false,{message:'email or password missing'})
     }
-
 }))
 
 //login
