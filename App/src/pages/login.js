@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import style from "./login.module.css"
 import axios from 'axios'
-import {Redirect} from 'react-router-dom'
+import LoginB from './LoginB'
 
 
 export default class login extends React.Component {
@@ -10,11 +10,10 @@ export default class login extends React.Component {
         super(props)
         this.state={
             email:"",
-            password:""
+            password:"",
+            check:true
         }
     }
-
-    
 
     emailChange=(event)=>{
         this.setState({email:event.target.value})
@@ -24,33 +23,42 @@ export default class login extends React.Component {
         this.setState({password:event.target.value})
     }
 
+    wrongCheck=()=>{
+        this.setState({check:false})
+    }
+
     handleLogin=()=>{
-        const header={Authorization:'Basic '+this.state.email+":"+this.state.password}
-        if(this.state.email.includes('student.oamk.fi')){
-            /*axios.post('http:localhost:5000/login',null,{headers:header})
-        .then(Response=>{
-            sessionStorage.setItem('Token',Response.data.token)
-        })
-        .catch(err=>{
-            console.log(err)
-        })*/
+        if(this.state.email.includes('students.oamk.fi')){
+            axios.post('http://localhost:5000/login/',null,{auth:{username:this.state.email,password:this.state.password}})
+            .then(Response=>{
+                console.log('api')
+                sessionStorage.setItem('Token',Response.data.token)
+                sessionStorage.setItem('Role','student')
+                return true
+            })
+            .catch(err=>{
+                console.log(err)
+                this.wrongCheck()
+                return false
+            })
         }else{
+            console.log('teach login')
             sessionStorage.setItem('Token','a')
-            return(<Redirect to='/Thome'/>)
+            sessionStorage.setItem('Role','teacher')
+            this.wrongCheck()
             /*axios.post('http:localhost:5000/login',null,{headers:header})
-        .then(Response=>{
-            sessionStorage.setItem('Token',Response.data.token)
-        })
-        .catch(err=>{
-            console.log(err)
-        })*/
+            .then(Response=>{
+                sessionStorage.setItem('Token',Response.data.token)
+            })
+            .catch(err=>{
+                console.log(err)
+            })*/
         }
         
     }
 
   render() {
-      let token=sessionStorage.getItem('Token')
-      if(token==null){
+      if(this.state.check==true){
     return (
         <div className={style.box}>
             <div>Login</div>
@@ -67,8 +75,31 @@ export default class login extends React.Component {
             onChange={this.passwordChange}
             />
             <div>
-                <button onClick={()=>this.handleLogin()}>login</button>
+                <LoginB handle={this.handleLogin} logged={this.props.logged}/>
             </div>
         </div>
-    )}
+    )
+      }else{
+        return (
+            <div className={style.box}>
+                <div>Login</div>
+                <div>wrong password or email</div>
+                <div>email</div>
+                <input
+                type='text'
+                value={this.setState.email}
+                onChange={this.emailChange}
+                />
+                <div>password</div>
+                <input
+                type='text'
+                value={this.setState.password}
+                onChange={this.passwordChange}
+                />
+                <div>
+                    <LoginB handle={this.handleLogin} logged={this.props.logged}/>
+                </div>
+            </div>
+        )
+      }
 }}
