@@ -111,8 +111,8 @@ router.get('/DSC',passport.authenticate('jwt',{session:false}),function(request,
     })
 })
 //get course day info for student
-router.get('/SDS',passport.authenticate('jwt',{session:false}),function(request,response){
-    course.getSDS(request.user.id,request.body,function(err,result){
+router.get('/SDS/:name?',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getSDS(request.user.id,request.params.name,function(err,result){
         if(err){
             response.json(err)
         }else{

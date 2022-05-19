@@ -9,12 +9,14 @@ const teacherRouter = require('./routes/teacher');
 const courseRouter = require('./routes/course');
 const statusRouter = require('./routes/checkstatus')
 
+
 const app = express();
 app.use(bodyparser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json())
 app.use(cors())
+app.options('*',cors())
 
 app.use('/',statusRouter)
 app.use('/login',loginRouter);
