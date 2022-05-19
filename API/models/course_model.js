@@ -23,11 +23,11 @@ const course={
     },
     //get all courses of teacher
     getTID:function(id,callback){
-        return db.query('select distinct name,min(date),max(date) from course where TeacherID=? group by name',[id],callback)
+        return db.query('select distinct name,min(date) as min,max(date) as max from course where TeacherID=? group by name',[id],callback)
     },
     //get all courses of student
     getSID:function(id,callback){
-        return db.query('select distinct name,min(date),max(date) from course where StudentID=? group by name',[id],callback)
+        return db.query('select distinct name,min(date) as min,max(date) as max from course where StudentID=? group by name',[id],callback)
     },
     //get all status from students in course
     getCSC:function(id,course,callback){
@@ -40,7 +40,7 @@ const course={
     },
     //get info on all course days to student
     getSDS:function(id,course,callback){
-        return db.query('select * from course where studentid=? and name=?',[id,course.name],callback)
+        return db.query('select * from course where studentid=? and name=?',[id,course],callback)
     },
     //get names of students with status null in certain day of course
     getLS:function(id,course,callback){
