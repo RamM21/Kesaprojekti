@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import style from "./login.module.css"
 import axios from 'axios'
-import LoginB from './LoginB'
+import { useNavigate } from "react-router-dom";
+import LoginB from "./LoginB";
 
 
 export default class login extends React.Component {
@@ -31,7 +32,6 @@ export default class login extends React.Component {
         if(this.state.email.includes('students.oamk.fi')){
             axios.post('http://localhost:5000/login/',null,{auth:{username:this.state.email,password:this.state.password}})
             .then(Response=>{
-                console.log('api')
                 sessionStorage.setItem('Token',Response.data.token)
                 sessionStorage.setItem('Role','student')
                 return true
@@ -42,17 +42,18 @@ export default class login extends React.Component {
                 return false
             })
         }else{
-            console.log('teach login')
-            sessionStorage.setItem('Token','a')
-            sessionStorage.setItem('Role','teacher')
-            this.wrongCheck()
-            /*axios.post('http:localhost:5000/login',null,{headers:header})
+            console.log(this.state.email+" "+this.state.password)
+            axios.post('http://localhost:5000/login/',null,{auth:{username:this.state.email,password:this.state.password}})
             .then(Response=>{
                 sessionStorage.setItem('Token',Response.data.token)
+                sessionStorage.setItem('Role','teacher')
+                return true
             })
             .catch(err=>{
                 console.log(err)
-            })*/
+                this.wrongCheck()
+                return false
+            })
         }
         
     }
@@ -75,7 +76,7 @@ export default class login extends React.Component {
             onChange={this.passwordChange}
             />
             <div>
-                <LoginB handle={this.handleLogin} logged={this.props.logged}/>
+                    <LoginB handle={this.handleLogin}/>
             </div>
         </div>
     )

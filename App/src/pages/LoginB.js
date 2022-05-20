@@ -7,10 +7,9 @@ export default function LoginB(props) {
     const [bool, setBool]=useState(false)
 
         useEffect(()=>{
-            console.log('effect')
             if(bool){
                 console.log('effect if')
-                if(sessionStorage.getItem('Role')=='teacher'){
+                if(sessionStorage.getItem('Role')==='teacher'){
                     Nav('/Thome')
                     props.logged()
                 }else{

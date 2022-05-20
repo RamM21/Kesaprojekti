@@ -30,13 +30,17 @@ const course={
         return db.query('select distinct name,min(date) as min,max(date) as max from course where StudentID=? group by name',[id],callback)
     },
     //get all status from students in course
-    getCSC:function(id,course,callback){
-        return db.query('select count(1) as count,status from course where TeacherID=? and Name=? group by status',[id,course.name],callback)
+    getCSC:function(id,name,callback){
+        return db.query('select count(1) as count,status from course where TeacherID=? and Name=? group by status',[id,name],callback)
+    },
+    //get calendar of teacher course
+    getDTC:function(id,name,callback){
+        return db.query('select distinct date from course where teacherid=? and name=?',[id,name],callback)
     },
     //get certain days status from all students
-    getDSC:function(id,course,callback){
-        return db.query('select count(1) as count,status from course where TeacherID=? and Name=? and date=? group by status',
-        [id,course.name,course.date],callback)
+    getDSC:function(id,name,date,callback){
+        return db.query('select count(1) as count,status,date from course where TeacherID=? and Name=? and date=? group by status',
+        [id,name,date],callback)
     },
     //get info on all course days to student
     getSDS:function(id,course,callback){
