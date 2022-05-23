@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import style from './teacherC.module.css'
 import { Link } from "react-router-dom";
+import Status from './status'
 
 
 export default class teacherCourse extends React.Component {
@@ -17,7 +18,7 @@ export default class teacherCourse extends React.Component {
     this.getTeacherCourseCalendar()
   }
 
-  getTeacherCourseCalendar=()=>{
+  getTeacherCourseCalendar= async()=>{
     let name=sessionStorage.getItem('name')
     let header={Authorization:'Bearer '+sessionStorage.getItem('Token')}
     axios.get('http://localhost:5000/course/DTC/'+name,{headers:header})
@@ -33,17 +34,16 @@ export default class teacherCourse extends React.Component {
           element.status='empty'
         }
       });
-
-      this.setState({calendar:array},()=>{this.getDayStatus()})
+      this.getDayStatus(array)
     })
     .catch(err=>{
       console.log(err)
     })
   }
-  getDayStatus=()=>{
+  getDayStatus=async (array)=>{
     let name=sessionStorage.getItem('name')
     let header={Authorization:'Bearer '+sessionStorage.getItem('Token')}
-    this.state.calendar.forEach(e=>{
+    await array.forEach(e=>{
       var newDate = e.date.slice(-4)
       newDate+=e.date.slice(2,5)
       newDate+=e.date.slice(0,2)
@@ -60,8 +60,26 @@ export default class teacherCourse extends React.Component {
             element.status='empty'
           }
         });
-        
-        this.setState({status:array})
+        let arr=[...this.state.calendar]
+          for(let i=0;i<array.length;i++){
+            if(arr.length>0){
+              for(let ii=0;ii<arr.length;ii++){
+              console.log(arr)
+            if(arr[ii].date==(array[0].date)){
+              
+            }else{
+              arr.push({date:array[0].date,
+                Array:array
+            })
+            }}
+            }else{
+              arr.push({date:array[0].date,
+                Array:array
+            })
+            }
+          }
+            arr.sort()
+        this.setState({calendar:arr})
       })
       .catch(err=>{
         console.log(err)
@@ -79,10 +97,10 @@ export default class teacherCourse extends React.Component {
         <div style={{backgroundColor:'black',width:'10%',height:'3%'}}>
         </div>
         <div className={style.grid}>
-          {this.state.calendar.map((e,i)=>(<div className={style.box}>
+          {this.state.calendar.map((e,i)=>(<button className={style.box}>
             <div className={style.text}>{e.date}</div>
-            {this.state.status.map((c,index)=> (<div>{c.status}{c.count}</div>))}
-          </div>))}
+            <Status array={e.Array}/>
+          </button>))}
         </div>
       </div>
     )
