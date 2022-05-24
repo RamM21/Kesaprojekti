@@ -7,7 +7,7 @@
 .box{
     background-color: lightgrey;
     border: 1px solid black;
-    height: 10%;
+    height: 13%;
     width: 12%;
     margin-left: 5%;
     text-decoration: none;
@@ -35,4 +35,15 @@
     margin-left: 5%;
     font-size: xx-large;
     text-decoration: underline;
+}
+.newCourse{
+    margin-top: 1%;
+    margin-left: 4%;
+    padding: 5px;
+    border: 2px solid black;
+    background-color: lightgrey;
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+    font-size: large;
 }

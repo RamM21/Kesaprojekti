@@ -49,6 +49,7 @@ export default class teacherHome extends React.Component {
       <div>
         <div style={{marginTop:'1%'}}>
           <Link to='/' className={style.logout} onClick={()=>this.logoutHandle()}>logout</Link>
+          <Link to='/NCourse' className={style.newCourse}>New course</Link>
         </div>
         <div className={style.topText}>
           Courses

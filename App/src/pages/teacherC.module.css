@@ -9,19 +9,20 @@
     font-weight: 500;
     color: black;
     margin-left: 2%;
+    margin-top: 3%;
     text-decoration: underline;
 }
 .box{
     border: 1px solid black;
-    height: 100px;
-    width: 10%;
+    height: 130px;
+    width: 13%;
     margin-left: 1%;
+    margin-bottom: 1%;
 }
 .text{
     font-size: large;
     text-align: left;
-    margin-top: 10%;
-    margin-bottom: 10%;
+    margin-bottom: 6%;
 }
 .optionsBox{
     border: 1px solid black;
@@ -34,4 +35,22 @@
     font-weight: 500;
     color: black;
     text-decoration: none;
+}
+.statusBox{
+    border: 1px solid black;
+    margin-top: 2%;
+    height: auto;
+    width: 100%;
+}
+.statusTitle{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 2%;
+    font-weight: 500;
+    font-size: large;
+}
+.statusNameText{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 2%;
 }

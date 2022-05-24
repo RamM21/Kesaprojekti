@@ -7,7 +7,7 @@ export default function status(props) {
    }
   return (
     <div>
-        {arr.map(e=>(<div>{e.status} {e.count}</div>))}
+        {arr.map(e=>(<div style={{textAlign:'left',marginBottom:'3%',fontWeight:'bold'}}>status {e.status} amount {e.count}</div>))}
     </div>
   )
 }
