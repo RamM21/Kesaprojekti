@@ -13,8 +13,8 @@ const course={
         [course.name,course.date,id,course.StudentID],callback)
     },
     //deleting old course
-    delete:function(id,course,callback){
-        return db.query('delete from course where teacherid=? and name=?',[id,course.name],callback)
+    delete:function(id,name,callback){
+        return db.query('delete from course where teacherid=? and name=?',[id,name],callback)
     },
     //students change status of certain day
     update:function(id,course,callback){

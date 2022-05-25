@@ -116,7 +116,7 @@ var mailOptions = {
     from:'ramiilmari@gmail.com',
     to:mail,
     subject:'test',
-    text:'you have not answered to studying status in '+course+' go fill in not anwered days'
+    text:'you have not answered to studying status in '+course+' go fill in late anwered days'
 }
 
 transporter.sendMail(mailOptions,function(err,result){

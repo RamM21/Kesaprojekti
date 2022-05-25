@@ -56,6 +56,7 @@ export default class studentHome extends React.Component {
         <div className={style.topText}>
           Courses
         </div>
+        <div style={{backgroundColor:'black',width:'100%',height:'2px'}}/>
           <div className={style.grid}>
           {this.state.courses.map(e=>(<Link to='/Scourse' className={style.box} onClick={()=>this.setCourseName(e.name)}>
             <div>

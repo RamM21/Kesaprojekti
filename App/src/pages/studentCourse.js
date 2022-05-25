@@ -34,6 +34,13 @@ export default class studentCourse extends React.Component {
           element.Status='empty'
         }
       });
+      
+      array.sort(function(a,b){
+        a.Date = a.Date.split('/').join('');
+        b.Date = b.Date.split('/').join('');
+        return a.Date > b.Date ? 1 : a.Date < b.Date ? -1 : 0;
+      })
+      console.group(array)
       this.setState({calendar:array})
       this.setState({name:Response.data[0].Name})
       array.forEach(element=>{
@@ -74,8 +81,8 @@ export default class studentCourse extends React.Component {
   render() {
     return (
       <div>
-        <div style={{display:'flex',marginTop:'2%'}}>
-        <Link to='/Shome' className={style.backBut}>back to courses</Link>
+        <div style={{margin:'2%'}}>
+        <Link to='/' className={style.backBut}>back to courses</Link>
         <div className={style.courseText}>{this.state.name}</div>
         </div>
         <div style={{backgroundColor:'black',width:'10%',height:'3%'}}>

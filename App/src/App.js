@@ -16,12 +16,7 @@ class App extends React.Component{
     }
   }
 
-  componentDidMount=()=>{
-
-  }
-  componentDidUpdate=()=>{
-    
-  }
+  
   changelogged=()=>{
     var check=this.state.logged
     this.setState({logged:!check})
@@ -35,7 +30,7 @@ render(){
     return(
       <BrowserRouter>
         <Routes>
-          <Route path='/Shome'element={<StudentH logged={this.changelogged}/>}/>
+          <Route path='/'element={<StudentH logged={this.changelogged}/>}/>
           <Route path='/Scourse' element={<StudentC/>}/>
         </Routes>
     </BrowserRouter>
@@ -44,7 +39,7 @@ render(){
     return(
     <BrowserRouter>
         <Routes>
-          <Route path='/Thome'element={<TeacherH logged={this.changelogged}/>}/>
+          <Route path='/'element={<TeacherH logged={this.changelogged}/>}/>
           <Route path='/Tcourse' element={<TeacherC/>}/>
           <Route path='/Ncourse' element={<TeacherNC/>}/>
         </Routes>

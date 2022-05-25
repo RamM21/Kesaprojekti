@@ -1,5 +1,5 @@
 .grid{
-    margin-top: 5%;
+    margin-top: 2%;
     margin-left: 5%;
     display: flex;
     flex-wrap: wrap;
@@ -8,8 +8,9 @@
     font-size: large;
     font-weight: 500;
     color: black;
-    margin-left: 2%;
-    margin-top: 3%;
+    margin-left: 6%;
+    margin-bottom: 1%;
+    margin-top: 1%;
     text-decoration: underline;
 }
 .box{

@@ -8,7 +8,9 @@ export default class teacherHome extends React.Component {
   constructor(props){
     super(props)
     this.state={
-      courses:[]
+      courses:[],
+      state:false,
+      name:""
     }
   }
   componentDidMount=()=>{
@@ -35,6 +37,19 @@ export default class teacherHome extends React.Component {
     })
   }
 
+  deleteCourse=(name)=>{
+    let header={Authorization:'Bearer '+sessionStorage.getItem('Token')}
+    axios.delete('http://localhost:5000/course/'+name,{headers:header})
+    .then(Response=>{
+      this.getTeacherCourses()
+      this.confirmationHandle("")
+    }
+    )
+    .catch(err=>{
+      console.log(err)
+    })
+  }
+
   setCourseName=(name)=>{
     sessionStorage.setItem('name',name)
   }
@@ -44,7 +59,46 @@ export default class teacherHome extends React.Component {
     this.props.logged()
   }
 
+  confirmationHandle=(name)=>{
+    let state=!this.state.state
+    this.setState({state:state,name:name})
+  }
+
   render() {
+    if(this.state.state){
+      return (
+        <div>
+          <div>
+            <Link to='/' className={style.logout} onClick={()=>this.logoutHandle()}>logout</Link>
+            <Link to='/NCourse' className={style.newCourse}>New course</Link>
+          </div>
+          <div className={style.topText}>
+            Courses
+          </div>
+          <div className={style.confirmationBox}>
+              <div style={{margin:'3%'}}>Are you sure delete course {this.state.name}</div>
+              <div style={{marginLeft:'35%'}}>
+                <button style={{marginRight:'10%'}} onClick={()=>this.deleteCourse(this.state.name)}>Yes</button>
+                <button onClick={()=>this.confirmationHandle("")}>No</button>
+              </div>
+          </div>
+            <div className={style.grid}>
+            {this.state.courses.map(e=>(<div className={style.box}>
+              <Link to='/Tcourse' style={{textDecoration:'none'}} onClick={()=>this.setCourseName(e.name)}>
+              <div className={style.textBox}>
+                <div className={style.text}>{e.name}</div>
+                <div className={style.text}>Starting date {e.min}</div>
+                <div className={style.text}>Ending date {e.max}</div>
+              </div>
+            </Link>
+            <div>
+              <button className={style.delBut} onClick={()=>this.confirmationHandle(e.name)}>x</button>
+            </div>
+            </div>))}
+          </div>
+        </div>
+      )
+    }else{
     return (
       <div>
         <div style={{marginTop:'1%'}}>
@@ -54,16 +108,23 @@ export default class teacherHome extends React.Component {
         <div className={style.topText}>
           Courses
         </div>
+        <div style={{height:'2px',width:'100%',backgroundColor:'black'}}></div>
           <div className={style.grid}>
-          {this.state.courses.map(e=>(<Link to='/Tcourse' className={style.box} onClick={()=>this.setCourseName(e.name)}>
-            <div>
+          {this.state.courses.map(e=>(<div className={style.box}>
+            <Link to='/Tcourse' style={{textDecoration:'none'}} onClick={()=>this.setCourseName(e.name)}>
+            <div className={style.textBox}>
               <div className={style.text}>{e.name}</div>
               <div className={style.text}>Starting date {e.min}</div>
               <div className={style.text}>Ending date {e.max}</div>
             </div>
-          </Link>))}
+          </Link>
+          <div>
+            <button className={style.delBut} onClick={()=>this.confirmationHandle(e.name)}>x</button>
+          </div>
+          </div>))}
         </div>
       </div>
     )
+    }
   }
 }

@@ -71,8 +71,8 @@ router.post('/',passport.authenticate('jwt',{session:false}),function(request,re
     })
 })
 //removing course
-router.delete('/',passport.authenticate('jwt',{session:false}),function(request,response){
-    course.delete(request.user.id,request.body,function(err,result){
+router.delete('/:name?',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.delete(request.user.id,request.params.name,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -116,7 +116,14 @@ router.get('/DSC/:name?/:date?',passport.authenticate('jwt',{session:false}),fun
         if(err){
             response.json(err)
         }else{
-            response.json(result)
+            let arr=[]
+            for (let i = 0; i < result.length; i++) {
+                arr.push({
+                    status:result[i].status,
+                    count:result[i].count
+                })
+            }
+            response.json([{date:result[0].date,Array:arr}])
         }
     })
 })

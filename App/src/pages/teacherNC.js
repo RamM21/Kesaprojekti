@@ -13,7 +13,9 @@ export default class teacherNC extends React.Component {
       students:[],
       days:[],
       studentData:[],
-      courseName:""
+      courseName:"",
+      useMessage:"",
+      message:false
     }
   }
   
@@ -25,13 +27,24 @@ export default class teacherNC extends React.Component {
   submitCourse=async()=>{
     let students=this.state.students
     let days=this.state.days
-    days.forEach(element => {
-      students.forEach(e=>{
-        this.makeNewCourse(element.date,e.value)
-      })
-    });
+    if(students.length==0 || days.length==0 || this.state.courseName==""){
+      this.setState({useMessage:'Fill all boxes and then try again',message:true})
+    }else{
+      days.forEach(element => {
+        students.forEach(e=>{
+          this.makeNewCourse(element.date,e.value)
+        })
+      });
+    }
   }
 
+  handleMessage=(check)=>{
+    if(check){
+      this.setState({useMessage:'Course made succesfully',message:true})
+    }else{
+      this.setState({useMessage:'There was an error try again',message:true})
+    }
+  }
   
 
   makeNewCourse=async(date,id)=>{
@@ -39,9 +52,15 @@ export default class teacherNC extends React.Component {
     let header={Authorization:'Bearer '+sessionStorage.getItem('Token')}
     axios.post('http://localhost:5000/course/',{date:date,StudentID:id,name:name},{headers:header})
     .then(Response=>{
-      console.log(Response.data)
+      if(this.state.message==false || this.state.useMessage.includes('Fill')){
+        this.handleMessage(true)
+      }
+      console.log(Response)
     })
     .catch(err=>{
+      if(this.state.message==false){
+        this.handleMessage(false)
+      }
       console.log(err)
     })
   }
@@ -88,25 +107,50 @@ export default class teacherNC extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div style={{display:'flex',marginTop:'2%'}}>
-          <Link to='/Thome' className={style.backBut}>back to home</Link>
+    if(this.state.message){
+      return (
+        <div>
+          <div style={{display:'flex',marginTop:'2%'}}>
+            <Link to='/' className={style.backBut}>back to home</Link>
+          </div>
+          <div className={style.messageBox}>
+            <div className={style.message}>{this.state.useMessage}</div>
+          </div>
+          <div className={style.box}>
+            <div className={style.formTitle}>new course</div>
+              <div style={{marginLeft:'10%'}}>
+                <div className={style.text}>Course Name</div>
+                <input className={style.nameInput} onChange={this.handleCourseNameChange}></input>
+                <div className={style.text}>Students</div>
+                <Select className={style.select}  isMulti options={this.state.studentData} onChange={this.handleSelectStudent}/>
+                <div className={style.text}>Days</div>
+                <Calendar handleCal={this.handleCalendar}/>
+              </div>
+            <button className={style.submitBut} onClick={()=>this.submitCourse()}>submit</button>
+          </div>
         </div>
-        <div className={style.box}>
-          <div className={style.formTitle}>new course</div>
-            <div style={{marginLeft:'10%'}}>
-              <div>Course Name</div>
-              <input onChange={this.handleCourseNameChange}></input>
-              <div>Students</div>
-              <Select className={style.select}  isMulti options={this.state.studentData} onChange={this.handleSelectStudent}/>
-              <div>Days</div>
-              <Calendar handleCal={this.handleCalendar}/>
-            </div>
-          <button className={style.submitBut} onClick={()=>this.submitCourse()}>submit</button>
+      )
+    }else{
+      return (
+        <div>
+          <div style={{display:'flex',marginTop:'2%'}}>
+            <Link to='/' className={style.backBut}>back to home</Link>
+          </div>
+          <div className={style.box}>
+            <div className={style.formTitle}>new course</div>
+              <div style={{marginLeft:'10%'}}>
+                <div className={style.text}>Course Name</div>
+                <input className={style.nameInput} onChange={this.handleCourseNameChange}></input>
+                <div className={style.text}>Students</div>
+                <Select className={style.select}  isMulti options={this.state.studentData} onChange={this.handleSelectStudent}/>
+                <div className={style.text}>Days</div>
+                <Calendar handleCal={this.handleCalendar}/>
+              </div>
+            <button className={style.submitBut} onClick={()=>this.submitCourse()}>submit</button>
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
