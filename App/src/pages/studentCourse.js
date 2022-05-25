@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import style from './studentC.module.css'
+import {Link} from 'react-router-dom'
 
 export default class studentCourse extends React.Component {
   constructor(props){
@@ -33,6 +34,13 @@ export default class studentCourse extends React.Component {
           element.Status='empty'
         }
       });
+      
+      array.sort(function(a,b){
+        a.Date = a.Date.split('/').join('');
+        b.Date = b.Date.split('/').join('');
+        return a.Date > b.Date ? 1 : a.Date < b.Date ? -1 : 0;
+      })
+      console.group(array)
       this.setState({calendar:array})
       this.setState({name:Response.data[0].Name})
       array.forEach(element=>{
@@ -48,7 +56,7 @@ export default class studentCourse extends React.Component {
   handleClick=(index)=>{
     let array=this.state.clicked
     array.forEach(e=>{
-      if(e.id==index){
+      if(e.id===index){
         e.state=!e.state
       }
     })
@@ -56,14 +64,13 @@ export default class studentCourse extends React.Component {
   }
 
   changeStatus=(date,status)=>{
-    console.log(date)
-    date = new Date().toISOString(date).split('T')
-    console.log(date)
+    var newDate = date.slice(-4)
+    newDate+=date.slice(2,5)
+    newDate+=date.slice(0,2)
     let header={Authorization:'Bearer '+sessionStorage.getItem('Token')}
-    let data={'status':status,'date':date,'name':this.state.name}
+    let data={'status':status,'date':newDate,'name':this.state.name}
     axios.put('http://localhost:5000/course/',data,{headers:header})
     .then(Response=>{
-        console.log(Response.data)
         this.getCourseCalendar()
     })
     .catch(err=>{
@@ -74,12 +81,17 @@ export default class studentCourse extends React.Component {
   render() {
     return (
       <div>
+        <div style={{margin:'2%'}}>
+        <Link to='/' className={style.backBut}>back to courses</Link>
         <div className={style.courseText}>{this.state.name}</div>
+        </div>
+        <div style={{backgroundColor:'black',width:'10%',height:'3%'}}>
+        </div>
         <div className={style.grid}>
-          {this.state.calendar.map((e,i)=>(<button className={style.box} onClick={()=>this.handleClick(e.CourseID)}>
+          {this.state.calendar.map((e,i)=>(<button className={style.box} style={{backgroundColor:e.Status}} onClick={()=>this.handleClick(e.CourseID)}>
             <div className={style.text}>{e.Date}</div>
             <div className={style.text}>Status {e.Status}</div>
-            {this.state.clicked[i].state && <div>{this.state.statusValues.map(s=><option value={e.CourseID} onClick={()=>this.changeStatus(e.Date,s.status)}>{s.status}</option>)}</div>}
+            {this.state.clicked[i].state && <div>{this.state.statusValues.map(s=><option className={style.optionsBox} style={{backgroundColor:s.status}} value={e.CourseID} onClick={()=>this.changeStatus(e.Date,s.status)}>{s.status}</option>)}</div>}
           </button>))}
         </div>
       </div>

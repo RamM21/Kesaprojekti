@@ -16,34 +16,30 @@ class App extends React.Component{
     }
   }
 
-  componentDidMount=()=>{
-
-  }
-  componentDidUpdate=()=>{
-    
-  }
+  
   changelogged=()=>{
-    this.setState({logged:true})
+    var check=this.state.logged
+    this.setState({logged:!check})
   }
 
 
 render(){
   var token=sessionStorage.getItem("Token")
   var role=sessionStorage.getItem("Role")
-  if(token!=null && role=='student'){
+  if(token!=null && role==='student'){
     return(
       <BrowserRouter>
         <Routes>
-          <Route path='/Shome'element={<StudentH/>}/>
+          <Route path='/'element={<StudentH logged={this.changelogged}/>}/>
           <Route path='/Scourse' element={<StudentC/>}/>
         </Routes>
     </BrowserRouter>
     )
-  }else if(token!=null && role=='teacher'){
+  }else if(token!=null && role==='teacher'){
     return(
     <BrowserRouter>
         <Routes>
-          <Route path='/Thome'element={<TeacherH/>}/>
+          <Route path='/'element={<TeacherH logged={this.changelogged}/>}/>
           <Route path='/Tcourse' element={<TeacherC/>}/>
           <Route path='/Ncourse' element={<TeacherNC/>}/>
         </Routes>

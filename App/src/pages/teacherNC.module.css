@@ -1,0 +1,49 @@
+.backBut{
+    margin-left: 2%;
+    border: 2px solid black;
+    background-color: lightgrey;
+    font-weight: 500;
+    color: black;
+    text-decoration: none;
+}
+.box{
+    border: 1px solid black;
+    margin-top: 5%;
+    margin-left: 21%;
+    width: 50%;
+}
+.formTitle{
+    margin-top: 2%;
+    text-align: center;
+    font-weight: 500;
+    font-size: large;
+    margin-bottom: 3%;
+}
+.submitBut{
+    font-size: large;
+    margin-left: 46%;
+    margin-bottom: 2%;
+    margin-top: 3%;
+}
+.select{
+    width: 80%;
+    height: 2%;
+}
+.messageBox{
+    margin-top: 2%;
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+.message{
+    font-size: xx-large;
+    font-weight: bold;
+}
+.text{
+    margin-top: 2%;
+}
+.nameInput{
+    width: 30%;
+    height: 25px;
+}

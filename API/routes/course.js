@@ -71,8 +71,8 @@ router.post('/',passport.authenticate('jwt',{session:false}),function(request,re
     })
 })
 //removing course
-router.delete('/',passport.authenticate('jwt',{session:false}),function(request,response){
-    course.delete(request.user.id,request.body,function(err,result){
+router.delete('/:name?',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.delete(request.user.id,request.params.name,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -90,9 +90,19 @@ router.put('/',passport.authenticate('jwt',{session:false}),function(request,res
         }
     })
 })
+//get calendar of teacher course
+router.get('/DTC/:name?',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getDTC(request.user.id,request.params.name,function(err,result){
+        if(err){
+            response.json(err)
+        }else{
+            response.json(result)
+        }
+    })
+})
 //get students status count in whole course
-router.get('/CSC',passport.authenticate('jwt',{session:false}),function(request,response){
-    course.getCSC(request.user.id,request.body,function(err,result){
+router.get('/CSC/:name?',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getCSC(request.user.id,request.params.name,function(err,result){
         if(err){
             response.json(err)
         }else{
@@ -101,12 +111,19 @@ router.get('/CSC',passport.authenticate('jwt',{session:false}),function(request,
     })
 })
 //get student status count in certain day
-router.get('/DSC',passport.authenticate('jwt',{session:false}),function(request,response){
-    course.getDSC(request.user.id,request.body,function(err,result){
+router.get('/DSC/:name?/:date?',passport.authenticate('jwt',{session:false}),function(request,response){
+    course.getDSC(request.user.id,request.params.name,request.params.date,function(err,result){
         if(err){
             response.json(err)
         }else{
-            response.json(result)
+            let arr=[]
+            for (let i = 0; i < result.length; i++) {
+                arr.push({
+                    status:result[i].status,
+                    count:result[i].count
+                })
+            }
+            response.json([{date:result[0].date,Array:arr}])
         }
     })
 })

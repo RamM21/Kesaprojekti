@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import style from "./login.module.css"
 import axios from 'axios'
-import LoginB from './LoginB'
+import { useNavigate } from "react-router-dom";
+import LoginB from "./LoginB";
 
 
 export default class login extends React.Component {
@@ -11,7 +12,8 @@ export default class login extends React.Component {
         this.state={
             email:"",
             password:"",
-            check:true
+            check:true,
+            message:""
         }
     }
 
@@ -27,77 +29,85 @@ export default class login extends React.Component {
         this.setState({check:false})
     }
 
-    handleLogin=()=>{
-        if(this.state.email.includes('students.oamk.fi')){
-            axios.post('http://localhost:5000/login/',null,{auth:{username:this.state.email,password:this.state.password}})
-            .then(Response=>{
-                console.log('api')
-                sessionStorage.setItem('Token',Response.data.token)
-                sessionStorage.setItem('Role','student')
-                return true
-            })
-            .catch(err=>{
-                console.log(err)
-                this.wrongCheck()
-                return false
-            })
+    handleMessage=()=>{
+        this.setState({message:'Wrong password or email'})
+    }
+
+    handleLogin=async ()=>{
+        if(this.state.email=="" || this.state.password==""){
+            this.setState({message:'Fill both boxes first'},()=>this.wrongCheck())
         }else{
-            console.log('teach login')
-            sessionStorage.setItem('Token','a')
-            sessionStorage.setItem('Role','teacher')
-            this.wrongCheck()
-            /*axios.post('http:localhost:5000/login',null,{headers:header})
-            .then(Response=>{
-                sessionStorage.setItem('Token',Response.data.token)
-            })
-            .catch(err=>{
-                console.log(err)
-            })*/
+            if(this.state.email.includes('students.oamk.fi')){
+                await axios.post('http://localhost:5000/login/',null,{auth:{username:this.state.email,password:this.state.password}})
+                .then(Response=>{
+                    sessionStorage.setItem('Token',Response.data.token)
+                    sessionStorage.setItem('Role','student')
+                    this.props.logged()
+                })
+                .catch(err=>{
+                    console.log(err)
+                    this.setState({message:'Wrong password or email'},()=>this.wrongCheck())
+                })
+            }else{
+                await axios.post('http://localhost:5000/login/',null,{auth:{username:this.state.email,password:this.state.password}})
+                .then(Response=>{
+                    sessionStorage.setItem('Token',Response.data.token)
+                    sessionStorage.setItem('Role','teacher')
+                    this.props.logged()
+                })
+                .catch(err=>{
+                    console.log(err)
+                    this.setState({message:'Wrong password or email'},()=>this.wrongCheck())
+                })
+            }
         }
-        
     }
 
   render() {
-      if(this.state.check==true){
+      if(this.state.check){
     return (
         <div className={style.box}>
-            <div>Login</div>
-            <div>email</div>
+            <div className={style.loginText}>Login</div>
+            <div className={style.Text}>email</div>
             <input
+            className={style.emailInput}
             type='text'
             value={this.setState.email}
             onChange={this.emailChange}
             />
-            <div>password</div>
+            <div className={style.Text}>password</div>
             <input
+            className={style.passwordInput}
             type='text'
             value={this.setState.password}
             onChange={this.passwordChange}
             />
             <div>
-                <LoginB handle={this.handleLogin} logged={this.props.logged}/>
+                <button className={style.loginBut} onClick={()=>this.handleLogin()}>login</button>
             </div>
         </div>
     )
       }else{
         return (
             <div className={style.box}>
-                <div>Login</div>
-                <div>wrong password or email</div>
-                <div>email</div>
+                <div className={style.loginText}>Login</div>
+                <div className={style.message}>{this.state.message}</div>
+                <div className={style.Text}>email</div>
                 <input
+                className={style.emailInput}
                 type='text'
                 value={this.setState.email}
                 onChange={this.emailChange}
                 />
-                <div>password</div>
+                <div className={style.Text}>password</div>
                 <input
+                className={style.passwordInput}
                 type='text'
                 value={this.setState.password}
                 onChange={this.passwordChange}
                 />
                 <div>
-                    <LoginB handle={this.handleLogin} logged={this.props.logged}/>
+                    <button className={style.loginBut} onClick={()=>this.handleLogin()}>login</button>
                 </div>
             </div>
         )

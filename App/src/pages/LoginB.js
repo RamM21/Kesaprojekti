@@ -7,21 +7,21 @@ export default function LoginB(props) {
     const [bool, setBool]=useState(false)
 
         useEffect(()=>{
-            console.log('effect')
             if(bool){
-                console.log('effect if')
-                if(sessionStorage.getItem('Role')=='teacher'){
-                    Nav('/Thome')
+                console.log('if')
+                if(sessionStorage.getItem('Role')==='teacher'){
+                    console.log('teacher')
+                    Nav('/')
                     props.logged()
                 }else{
                     console.log('Here nav')
-                    Nav('/Shome')
+                    Nav('/')
                     props.logged()
-                } 
-            }
-        }) 
+                }
+            } 
+        },[bool]) 
          
     return(
-        <button onClick={()=>setBool(()=>props.handle())}>login</button>
+        <button style={{margin:'3%'}} onClick={()=>setBool(()=>props.handle())}>login</button>
     )
 }
