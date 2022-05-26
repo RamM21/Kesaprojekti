@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from "react";
 import style from "./login.module.css"
 import axios from 'axios'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginB from "./LoginB";
 
 
@@ -84,6 +84,12 @@ export default class login extends React.Component {
             />
             <div>
                 <button className={style.loginBut} onClick={()=>this.handleLogin()}>login</button>
+            </div>
+            <div className={style.registerText}>
+                <Link to='/'>Student registration</Link>
+            </div>
+            <div className={style.registerText}>
+                <Link to='/'>Teacher registration</Link>
             </div>
         </div>
     )
