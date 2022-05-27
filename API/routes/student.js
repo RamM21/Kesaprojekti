@@ -21,7 +21,7 @@ passport.use(new jwtStrategy(options,function(jwt_payload,done){
 }))
 
 //get all students or student by id
-router.get('/:id?',passport.authenticate('jwt',{session:false}),function(request,response){
+router.get('/:id?',function(request,response){
     if(request.params.id){
         student.getById(request.params.id,function(err,result){
             if(err){
@@ -42,13 +42,26 @@ router.get('/:id?',passport.authenticate('jwt',{session:false}),function(request
 })
 //add student
 router.post('/',function(request,response){
-    student.add(request.body,function(err,count){
+    student.get(function(err,result){
         if(err){
-            response.json(err)
+            console.log(err)
         }else{
-            response.json(request.body)
+            for (let i = 0; i < result.length; i++) {
+                if(result[i].email==request.body.email){
+                    response.json('email already used')
+                    return
+                }
+            }
+            student.add(request.body,function(err,count){
+                if(err){
+                    response.json(err)
+                }else{
+                    response.json(request.body)
+                }
+            })
         }
     })
+    
 })
 //remove student
 router.delete('/:id',passport.authenticate('jwt',{session:false}),function(request,response){

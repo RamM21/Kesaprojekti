@@ -1,8 +1,7 @@
-import React, { useEffect,useState } from "react";
+import React from "react";
 import style from "./login.module.css"
 import axios from 'axios'
-import { Link, useNavigate } from "react-router-dom";
-import LoginB from "./LoginB";
+import { Link } from "react-router-dom";
 
 
 export default class login extends React.Component {
@@ -13,8 +12,14 @@ export default class login extends React.Component {
             email:"",
             password:"",
             check:true,
-            message:""
+            message:"",
+            passShow:false
         }
+    }
+
+    handleShow=()=>{
+        let check=this.state.passShow
+        this.setState({passShow:!check})
     }
 
     emailChange=(event)=>{
@@ -34,7 +39,7 @@ export default class login extends React.Component {
     }
 
     handleLogin=async ()=>{
-        if(this.state.email=="" || this.state.password==""){
+        if(this.state.email==="" || this.state.password===""){
             this.setState({message:'Fill both boxes first'},()=>this.wrongCheck())
         }else{
             if(this.state.email.includes('students.oamk.fi')){
@@ -78,18 +83,19 @@ export default class login extends React.Component {
             <div className={style.Text}>password</div>
             <input
             className={style.passwordInput}
-            type='text'
+            type={ this.state.passShow ? 'text':'password'}
             value={this.setState.password}
             onChange={this.passwordChange}
             />
+            <input onClick={()=>this.handleShow()} type='checkbox'></input>
             <div>
                 <button className={style.loginBut} onClick={()=>this.handleLogin()}>login</button>
             </div>
             <div className={style.registerText}>
-                <Link to='/'>Student registration</Link>
+                <Link to='/RegisterS'>Student registration</Link>
             </div>
             <div className={style.registerText}>
-                <Link to='/'>Teacher registration</Link>
+                <Link to='/RegisterT'>Teacher registration</Link>
             </div>
         </div>
     )
@@ -108,13 +114,20 @@ export default class login extends React.Component {
                 <div className={style.Text}>password</div>
                 <input
                 className={style.passwordInput}
-                type='text'
+                type='password'
                 value={this.setState.password}
                 onChange={this.passwordChange}
                 />
+                <input onClick={()=>this.handleShow()} type='checkbox'></input>
                 <div>
                     <button className={style.loginBut} onClick={()=>this.handleLogin()}>login</button>
                 </div>
+                <div className={style.registerText}>
+                <Link to='/RegisterS'>Student registration</Link>
+            </div>
+            <div className={style.registerText}>
+                <Link to='/RegisterT'>Teacher registration</Link>
+            </div>
             </div>
         )
       }

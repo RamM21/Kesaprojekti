@@ -14,13 +14,15 @@
 }
 .emailInput{
     margin-left: 20%;
+    margin-bottom: 3%;
 }
 .passwordInput{
     margin-left: 20%;
-    text-decoration: dotted;
+    margin-bottom: 3%;
 }
 .message{
-    margin-left: 3%;
+    margin-top: 2%;
+    margin-left: 20%;
     font-size: large;
     color: red;
     margin-bottom: 3%;
