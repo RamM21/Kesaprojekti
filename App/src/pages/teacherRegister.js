@@ -22,26 +22,27 @@ export default class teacherRegister extends Component {
 handleSubmit=()=>{
   if(this.state.fname==="" || this.state.lname==="" || this.state.class==="" || this.state.email===""
      || this.state.password==="" || this.state.confirmPassword===""){
-      this.setState({messageState:false,message:'Fill all boxes first and then submit'})
+      this.setState({messageState:false,message:'Fill all boxes first and then submit',passShow:false,passShow2:false})
   }else{
     if(this.state.password===this.state.confirmPassword){
         axios.post('http://localhost:5000/teacher/',{fname:this.state.fname,lname:this.state.lname,
       class:this.state.class,email:this.state.email,password:this.state.password})
       .then(Response=>{
         if(Response.data==="email already used"){
-          this.setState({messageState:false,email:"",message:'email already used'})
+          this.setState({messageState:false,email:"",message:'email already used',passShow:false,passShow2:false})
         }else{
-          this.setState({messageState:false,email:"",message:'Sign up was successful'})
+          this.setState({messageState:false,email:"",message:'Sign up was successful',passShow:false,passShow2:false})
         }
       })
       .catch(err=>{
         console.log(err)
       })
     }else{
-      this.setState({messageState:false,password:"",confirmPassword:"",message:'Confirm password is different from password'})
+      this.setState({messageState:false,password:"",confirmPassword:"",message:'Confirm password is different from password',passShow:false,passShow2:false})
     }
   }
 }
+
 
 handle=(event)=>{
   let name=event.target.name

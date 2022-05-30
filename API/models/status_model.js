@@ -3,7 +3,7 @@ const db = require('../database')
 const status={
     //get students who have null status and late answer
     checkdate:function(date,callback){
-        return db.query('select distinct email ,fname,lname,name from student join course on course.studentid=student.studentid where date<? and status is null',
+        return db.query('select distinct email,fname,lname,name from student join course on course.studentid=student.studentid where date<? and status is null',
         [date],callback)
     },
     //get course end status

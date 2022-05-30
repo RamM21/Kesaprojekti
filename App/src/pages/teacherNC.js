@@ -72,7 +72,7 @@ export default class teacherNC extends React.Component {
         let array=[]
         Response.data.forEach(e=>{
             array.push({value:e.StudentID,
-              label:e.Fname+" "+e.lname+" : "+e.email,
+              label:e.Fname+" "+e.lname+" : "+e.email+" : "+e.class,
             })
         })
         this.setState({studentData:array})
