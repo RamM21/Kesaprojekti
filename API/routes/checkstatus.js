@@ -5,16 +5,19 @@ const status = require('../models/status_model')
 const course = require('../models/course_model')
 const stuff = require('../dev')
 const { response } = require('express')
+const { compareSync } = require('bcryptjs')
 
-//setInterval(checkstatus,10000)
+let time=1000*60*60*24
+//setInterval(checkstatus,time)
 
-/*
-function checkstatus(){
+
+async function checkstatus(){
     let date_ob= new Date()
     let day = ('0'+date_ob.getDate()).slice(-2)
     let month = ('0'+(date_ob.getMonth()+1)).slice(-2)
     let year = date_ob.getFullYear()
     date=(year+'-'+month+'-'+day).toString()
+    console.log('student')
 
     status.checkdate(date,function(err,result){
         if(err){
@@ -38,7 +41,7 @@ async function getEndStatus(){
     let month = ('0'+(date_ob.getMonth()+1)).slice(-2)
     let year = date_ob.getFullYear()
     date=(year+'-'+month+'-'+day).toString()
-
+    console.log('teacher')
     course.getFC(function(err,result){
         if(err){
             console.log(err)
@@ -83,8 +86,8 @@ let transporter = nodemailer.createTransport({
 var mailOptions = {
     from:'ramiilmari@gmail.com',
     to:info[0].email,
-    subject:'test',
-    text:'final status count in course '+info[0].name+"\n"+text
+    subject:'Summary of course '+info[0].name,
+    text:'final summary of status count in course '+info[0].name+"\n"+text
 }
 
 transporter.sendMail(mailOptions,function(err,result){
@@ -115,8 +118,8 @@ let transporter = nodemailer.createTransport({
 var mailOptions = {
     from:'ramiilmari@gmail.com',
     to:mail,
-    subject:'test',
-    text:'you have not answered to studying status in '+course+' go fill in late anwered days'
+    subject:'Empty days',
+    text:'You have blank answers in '+course+' go fill in the missed days'
 }
 
 transporter.sendMail(mailOptions,function(err,result){
@@ -126,6 +129,6 @@ transporter.sendMail(mailOptions,function(err,result){
         console.log(result)
     }
 })
-}*/
+}
 
 module.exports = router

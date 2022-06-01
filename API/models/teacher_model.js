@@ -6,7 +6,7 @@ const saltround=7
 const Teacher={
     //get all teacher info
     get:function(callback){
-        return db.query('select TeacherID,fname,lname,email from Teacher',callback)
+        return db.query('select email from Teacher',callback)
     },
     //get all info of certain teacher
     getById:function(id,callback){

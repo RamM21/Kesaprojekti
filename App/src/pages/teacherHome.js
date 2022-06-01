@@ -76,12 +76,13 @@ export default class teacherHome extends React.Component {
             Courses
           </div>
           <div className={style.confirmationBox}>
-              <div style={{margin:'3%'}}>Are you sure delete course {this.state.name}</div>
+              <div style={{margin:'3%',marginLeft:'25%'}}>Delete course {this.state.name}</div>
               <div style={{marginLeft:'35%'}}>
-                <button style={{marginRight:'10%'}} onClick={()=>this.deleteCourse(this.state.name)}>Yes</button>
-                <button onClick={()=>this.confirmationHandle("")}>No</button>
+                <button style={{marginRight:'15%',marginBottom:'7%'}} onClick={()=>this.deleteCourse(this.state.name)}>Yes</button>
+                <button style={{marginBottom:'7%'}} onClick={()=>this.confirmationHandle("")}>No</button>
               </div>
           </div>
+            <div style={{height:'2px',width:'100%',backgroundColor:'black'}}></div>
             <div className={style.grid}>
             {this.state.courses.map(e=>(<div className={style.box}>
               <Link to='/Tcourse' style={{textDecoration:'none'}} onClick={()=>this.setCourseName(e.name)}>

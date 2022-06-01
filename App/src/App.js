@@ -5,6 +5,8 @@ import StudentC from './pages/studentCourse'
 import TeacherH from './pages/teacherHome'
 import TeacherC from './pages/teacherCourse'
 import TeacherNC from './pages/teacherNC'
+import RegisterS from './pages/studentRegister'
+import ResgisterT from './pages/teacherRegister'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 
@@ -50,6 +52,8 @@ render(){
     <BrowserRouter>
     <Routes>
       <Route path='/' element={<Login logged={this.changelogged}/>}/>
+      <Route path='/RegisterS' element={<RegisterS/>}/>
+      <Route path='/RegisterT' element={<ResgisterT/>}/>
     </Routes>
     </BrowserRouter>
     )
