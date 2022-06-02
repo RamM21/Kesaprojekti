@@ -8,7 +8,7 @@ const { response } = require('express')
 const { compareSync } = require('bcryptjs')
 
 let time=1000*60*60*24
-//setInterval(checkstatus,time)
+setInterval(checkstatus,time)
 
 
 async function checkstatus(){
